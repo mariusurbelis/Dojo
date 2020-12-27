@@ -1,5 +1,6 @@
 //#include "..\..\Dojo\src\Dojo\Application.h"
 #include <Dojo.h>
+#include <memory>
 
 class Sandbox : public Dojo::Application
 {
@@ -9,7 +10,9 @@ class Sandbox : public Dojo::Application
 
 static bool drawSquare;
 static sf::Text text;
-static sf::RectangleShape rectangle;
+
+static sf::RectangleShape* myRectangle;
+static sf::Vector2 position = sf::Vector2(0, 0);
 
 Dojo::Application* Dojo::CreateApplication()
 {
@@ -19,6 +22,9 @@ Dojo::Application* Dojo::CreateApplication()
 
 void Dojo::Application::Start()
 {
+	position.x = 0;
+	position.y = 0;
+
 	DOJO_CLIENT_INFO("Start function ran");
 
 	/*
@@ -32,6 +38,7 @@ void Dojo::Application::Start()
 	if (!font.loadFromFile("res/fonts/ka1.ttf"))
 	{
 		// ERROR LOADING TEXT
+		DOJO_CLIENT_CRITICAL("ERROR LOADING FONT");
 	}
 
 	text.setFont(font);
@@ -39,17 +46,33 @@ void Dojo::Application::Start()
 	text.setCharacterSize(100);
 	text.setPosition(100, 300);
 
+	sf::RectangleShape rectangle;
 	rectangle.setSize(sf::Vector2f(100, 50));
 	rectangle.setOutlineColor(sf::Color::Red);
 	rectangle.setOutlineThickness(5);
 	rectangle.setPosition(10, 20);
 
-	Dojo::Application::drawables.push_back(&rectangle);
+	myRectangle = Dojo::Application::CreateShape(rectangle);
+
+	rectangle.setSize(sf::Vector2f(100, 100));
+	rectangle.setOutlineColor(sf::Color::Green);
+	rectangle.setOutlineThickness(5);
+	rectangle.setPosition(300, 200);
+
+	//Dojo::Application::rectangles.push_back(rectangle);
 }
 
 void Dojo::Application::Update()
 {
-
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+		rectangles[0].setPosition(sf::Vector2(rectangles[0].getPosition().x + 15, rectangles[0].getPosition().y));
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+		rectangles[0].setPosition(sf::Vector2(rectangles[0].getPosition().x - 15, rectangles[0].getPosition().y));
+	
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+		rectangles[0].setPosition(sf::Vector2(rectangles[0].getPosition().x, rectangles[0].getPosition().y - 15));
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+		rectangles[0].setPosition(sf::Vector2(rectangles[0].getPosition().x, rectangles[0].getPosition().y + 15));
 }
 
 void Dojo::Application::Draw(sf::RenderWindow& window)
@@ -57,18 +80,19 @@ void Dojo::Application::Draw(sf::RenderWindow& window)
 	if (drawSquare)
 	{
 		DOJO_CLIENT_INFO("Drawing it");
-		
+
 		//window.draw(text);
 
 		//window.draw(toDraw);
 	}
+	DOJO_CLIENT_WARN("Done draw");
 }
 
 void Dojo::Application::KeyPressed(sf::Keyboard::Key keyCode)
 {
 	if (keyCode == sf::Keyboard::Space)
 		drawSquare = true;
-	DOJO_CLIENT_TRACE("Key: {0}, Space {1}", keyCode, sf::Keyboard::Space);
+
 }
 
 void Dojo::Application::EndOfFrame()

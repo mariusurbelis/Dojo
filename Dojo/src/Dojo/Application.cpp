@@ -2,6 +2,17 @@
 
 namespace Dojo
 {
+	sf::RectangleShape* Application::CreateShape(sf::RectangleShape s)
+	{
+		sf::RectangleShape rect;
+		rect.setSize(s.getSize());
+		rect.setOutlineThickness(s.getOutlineThickness());
+		rect.setOutlineColor(s.getOutlineColor());
+		rect.setPosition(s.getPosition());
+		rect.setFillColor(s.getFillColor());
+		rectangles.push_back(rect);
+		return &rect;
+	}
 	Application::~Application()
 	{
 	}
@@ -31,7 +42,7 @@ namespace Dojo
 		//DOJO_CORE_INFO("Run started");
 
 		sf::RenderWindow window(sf::VideoMode(width, height), programName);
-		window.setFramerateLimit(5);
+		window.setFramerateLimit(60);
 
 		Start();
 
@@ -63,23 +74,24 @@ namespace Dojo
 					break;
 				}
 
-				if (keyIsPressed)
-					KeyPressed(event.key.code);
 			}
 
+			if (keyIsPressed)
+				KeyPressed(event.key.code);
 
 			Update();
 
-			window.clear(sf::Color::Red);
+			window.clear(sf::Color::White);
 
-			Draw(window);
-			
-			for (sf::Drawable* d : drawables)
+			//Draw(window);
+
+
+			for (sf::RectangleShape d : rectangles)
 			{
+				//DOJO_CORE_WARN("Huh: {0}", *d);
 				// Does not work
-				window.draw(*d);
+				window.draw(d);
 			}
-
 
 			window.display();
 

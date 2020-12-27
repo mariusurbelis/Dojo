@@ -12,7 +12,9 @@ namespace Dojo
 	{
 
 	public:
-		std::vector<sf::Drawable*> drawables;
+		std::vector<sf::RectangleShape> rectangles;
+		sf::RectangleShape rectgg;
+		sf::RectangleShape* CreateShape(sf::RectangleShape s);
 		Application(int _width, int _height, std::string _programName) : width(_width), height(_height), programName(_programName) {}
 		virtual ~Application();
 		virtual void KeyPressed(sf::Keyboard::Key key);
