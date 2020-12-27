@@ -1,0 +1,3 @@
+[submodule "Dojo/lib/spdlog"]
+	path = Dojo/lib/spdlog
+	url = https://github.com/gabime/spdlog
