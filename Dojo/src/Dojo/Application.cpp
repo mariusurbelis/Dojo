@@ -2,6 +2,20 @@
 
 namespace Dojo
 {
+	Entity* Application::CreateEntity(std::string texturePath)
+	{
+		Entity* entity = new Dojo::Entity();
+
+		entity->texture = new sf::Texture();
+		entity->sprite = new sf::Sprite();
+
+		entity->texture->loadFromFile(texturePath);
+		entity->sprite->setTexture(*(entity->texture));
+
+		entities.push_back(entity);
+
+		return entity;
+	}
 	sf::RectangleShape* Application::CreateShape(sf::RectangleShape s)
 	{
 		sf::RectangleShape rect;
@@ -38,7 +52,6 @@ namespace Dojo
 	void Application::SetIcon(std::string path)
 	{
 		sf::Image icon;
-
 		icon.loadFromFile(path);
 		windowReference->setIcon(512, 512, icon.getPixelsPtr());
 	}
@@ -61,7 +74,6 @@ namespace Dojo
 			//DOJO_CORE_INFO("Is open");
 
 			// EVENT POLLING
-			sf::Event event;
 			while (window.pollEvent(event))
 			{
 				//DOJO_CORE_WARN("Event was polled");
@@ -100,6 +112,11 @@ namespace Dojo
 
 			for (sf::Sprite s : sprites)
 				window.draw(s);
+
+			//DOJO_CORE_TRACE("Entity created {0}", entities[0]->sprite->getPosition().x);
+
+			for (Entity* e : entities)
+				window.draw(*(e->sprite));
 
 			window.display();
 			// ---------------------------------

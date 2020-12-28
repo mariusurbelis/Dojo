@@ -3,6 +3,7 @@
 #include "Core.h"
 #include <SFML/Graphics.hpp>
 #include "Log.h"
+#include "Entity.h"
 #include <vector>
 #include <chrono>
 #include <string>
@@ -15,6 +16,8 @@ namespace Dojo
 	public:
 		std::vector<sf::RectangleShape> rectangles;
 		std::vector<sf::Sprite> sprites;
+		std::vector<Entity*> entities;
+		Entity* CreateEntity(std::string texturePath);
 		sf::RectangleShape* CreateShape(sf::RectangleShape s);
 		sf::Sprite* CreateSprite(std::string path);
 		Application(int _width, int _height, std::string _programName) : width(_width), height(_height), programName(_programName) {}
@@ -31,6 +34,7 @@ namespace Dojo
 		sf::RenderWindow* windowReference;
 		std::string programName;
 		sf::Texture texture;
+		sf::Event event;
 	};
 
 	Application* CreateApplication();

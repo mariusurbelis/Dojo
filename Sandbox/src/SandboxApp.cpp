@@ -1,7 +1,7 @@
 //#include "..\..\Dojo\src\Dojo\Application.h"
 #include <Dojo.h>
 #include <memory>
-#include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
 
 class Sandbox : public Dojo::Application
 {
@@ -29,7 +29,6 @@ Dojo::Application* Dojo::CreateApplication()
 	return new Dojo::Application(windowWidth, windowHeight, "Rectangle Render Test");
 }
 
-
 void Dojo::Application::Start()
 {
 	/*
@@ -51,13 +50,17 @@ void Dojo::Application::Start()
 	rectangle.setOutlineThickness(25);
 	rectangle.setPosition(windowWidth / 2, windowHeight / 2);
 	myRectangle = Dojo::Application::CreateShape(rectangle);
+
+	Dojo::Entity* entity = Dojo::Application::CreateEntity("res/img/dojo.png");
+
+	entity->SetPosition(sf::Vector2(100.f, 300.f));
 }
 
 static double speed = 0.5;
 
 void Dojo::Application::Update(double frameTime)
 {
-	//DOJO_CLIENT_INFO("Frame time {0}", frameTime);
+	//DOJO_INFO("Frame time {0}", frameTime);
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		rectangles[0].setPosition(sf::Vector2(rectangles[0].getPosition().x + (int)(speed * frameTime), rectangles[0].getPosition().y));

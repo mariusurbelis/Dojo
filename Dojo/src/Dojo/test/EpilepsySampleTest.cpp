@@ -53,7 +53,7 @@ namespace Dojo
 
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 			{
-				DOJO_CLIENT_CRITICAL("Button press {0}", havoc);
+				DOJO_CRITICAL("Button press {0}", havoc);
 				havoc = !havoc;
 			}
 
