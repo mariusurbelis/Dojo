@@ -1,7 +1,6 @@
 #pragma once
 
 #include <memory>
-
 #include "Core.h"
 #include "spdlog/spdlog.h"
 
@@ -12,6 +11,7 @@ namespace Dojo
 	public:
 		static void Init();
 
+		// TODO: Compile warning on these two
 		inline static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return s_CoreLogger; }
 		inline static std::shared_ptr<spdlog::logger>& GetClientLogger() { return s_ClientLogger; }
 	private:

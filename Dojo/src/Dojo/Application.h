@@ -20,14 +20,17 @@ namespace Dojo
 		Entity* CreateEntity(std::string texturePath);
 		sf::RectangleShape* CreateShape(sf::RectangleShape s);
 		sf::Sprite* CreateSprite(std::string path);
+		
 		Application(int _width, int _height, std::string _programName) : width(_width), height(_height), programName(_programName) {}
 		virtual ~Application();
 		virtual void Start();
 		virtual void KeyPressed(sf::Keyboard::Key key);
 		virtual void Update(double frameTime);
 		virtual void EndOfFrame();
+		
 		void Run();
 		void SetIcon(std::string path);
+		void DestroyAll(); // FREE MEMORY USED BY ALL ENTITIES
 
 	private:
 		int width, height;

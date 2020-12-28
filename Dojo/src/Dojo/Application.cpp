@@ -2,6 +2,7 @@
 
 namespace Dojo
 {
+	// TODO: Shared textures. LOADING DUPLICATE TEXTUERS IS INEFFICIENT
 	Entity* Application::CreateEntity(std::string texturePath)
 	{
 		Entity* entity = new Dojo::Entity();
@@ -16,6 +17,8 @@ namespace Dojo
 
 		return entity;
 	}
+
+	// TODO: Complete rework or removal required
 	sf::RectangleShape* Application::CreateShape(sf::RectangleShape s)
 	{
 		sf::RectangleShape rect;
@@ -28,6 +31,7 @@ namespace Dojo
 		return &rect;
 	}
 
+	// TODO: Complete rework or removal required
 	sf::Sprite* Application::CreateSprite(std::string path)
 	{
 		texture.loadFromFile(path);
@@ -45,7 +49,10 @@ namespace Dojo
 	Application::~Application() {}
 
 	void Application::Start() { DOJO_CORE_ERROR("Function Start() is not implemented"); }
+	
+	// TODO: Figure out the C26812 warning
 	void Application::KeyPressed(sf::Keyboard::Key key) { DOJO_CORE_ERROR("Function KeyPressed(sf::Keyboard::Key key) is not implemented"); }
+	
 	void Application::EndOfFrame() { DOJO_CORE_ERROR("Function EndOfFrame() is not implemented"); }
 	void Application::Update(double frameTime) { DOJO_CORE_ERROR("Function Update(double frameTime) is not implemented"); }
 
@@ -56,6 +63,18 @@ namespace Dojo
 		windowReference->setIcon(512, 512, icon.getPixelsPtr());
 	}
 
+	// TODO: More testing needed to ensure all memory is being freed
+	void Application::DestroyAll()
+	{
+		for (Entity* e : entities)
+		{
+			delete e->sprite;
+			delete e->texture;
+			delete e;
+		}
+	}
+
+	// TODO: General cleanup needed
 	void Application::Run()
 	{
 		//DOJO_CORE_INFO("Run started");
@@ -77,7 +96,6 @@ namespace Dojo
 			while (window.pollEvent(event))
 			{
 				//DOJO_CORE_WARN("Event was polled");
-
 				switch (event.type)
 				{
 				case sf::Event::Closed:
@@ -92,9 +110,7 @@ namespace Dojo
 				case sf::Event::KeyReleased:
 					break;
 				}
-
 			}
-
 
 			{ // FRAME TIMINGS COUNTER
 				auto secondTime = std::chrono::high_resolution_clock::now();
