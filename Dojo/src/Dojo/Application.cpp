@@ -29,7 +29,16 @@ namespace Dojo
 	{
 	}
 
-	void Application::Update()
+	sf::RenderWindow* windowReference;
+
+	void Application::SetIcon(std::string path)
+	{
+		sf::Image icon;
+		icon.loadFromFile(path);
+		windowReference->setIcon(512, 512, icon.getPixelsPtr());
+	}
+
+	void Application::Update(double frameTime)
 	{
 	}
 
@@ -41,8 +50,11 @@ namespace Dojo
 	{
 		//DOJO_CORE_INFO("Run started");
 
-		sf::RenderWindow window(sf::VideoMode(width, height), programName);
+		sf::RenderWindow window(sf::VideoMode(width, height), programName + " | Powered By: DOJO ONE");
+		windowReference = &window;
 		window.setFramerateLimit(60);
+
+		auto firstTime = std::chrono::high_resolution_clock::now();
 
 		Start();
 
@@ -79,7 +91,14 @@ namespace Dojo
 			if (keyIsPressed)
 				KeyPressed(event.key.code);
 
-			Update();
+			{
+				auto secondTime = std::chrono::high_resolution_clock::now();
+				using dMsecs = std::chrono::duration<double, std::chrono::milliseconds::period>;
+				auto elapsed = dMsecs(secondTime - firstTime);
+				firstTime = secondTime;
+				Update(elapsed.count());
+			}
+
 
 			window.clear(sf::Color::White);
 

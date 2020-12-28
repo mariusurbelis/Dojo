@@ -5,6 +5,8 @@
 #include "Log.h"
 #include "test/EpilepsySampleTest.h"
 #include <vector>
+#include <chrono>
+#include <string>
 
 namespace Dojo
 {
@@ -20,9 +22,10 @@ namespace Dojo
 		virtual void KeyPressed(sf::Keyboard::Key key);
 		virtual void EndOfFrame();
 		virtual void Start();
-		virtual void Update();
+		virtual void Update(double frameTime);
 		virtual void Draw(sf::RenderWindow& windowReference);
 		void Run();
+		void SetIcon(std::string path);
 
 	private:
 		int width, height;

@@ -33,6 +33,8 @@ void Dojo::Application::Start()
 	Dojo::Application::GetWindow().setIcon(256, 256, icon.getPixelsPtr());
 	*/
 
+	Dojo::Application::SetIcon("res/img/dojo.png");
+
 	sf::Font font;
 
 	if (!font.loadFromFile("res/fonts/ka1.ttf"))
@@ -51,8 +53,10 @@ void Dojo::Application::Start()
 	rectangle.setOutlineColor(sf::Color::Red);
 	rectangle.setOutlineThickness(5);
 	rectangle.setPosition(10, 20);
-
 	myRectangle = Dojo::Application::CreateShape(rectangle);
+	rectangle.setPosition(10, 20);
+	myRectangle = Dojo::Application::CreateShape(rectangle);
+
 
 	rectangle.setSize(sf::Vector2f(100, 100));
 	rectangle.setOutlineColor(sf::Color::Green);
@@ -62,17 +66,21 @@ void Dojo::Application::Start()
 	//Dojo::Application::rectangles.push_back(rectangle);
 }
 
-void Dojo::Application::Update()
+static double speed = 0.3;
+
+void Dojo::Application::Update(double frameTime)
 {
+	DOJO_CLIENT_INFO("Frame time {0}", frameTime);
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-		rectangles[0].setPosition(sf::Vector2(rectangles[0].getPosition().x + 15, rectangles[0].getPosition().y));
+		rectangles[0].setPosition(sf::Vector2(rectangles[0].getPosition().x + (int)(speed * frameTime), rectangles[0].getPosition().y));
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		rectangles[0].setPosition(sf::Vector2(rectangles[0].getPosition().x - 15, rectangles[0].getPosition().y));
+		rectangles[0].setPosition(sf::Vector2(rectangles[0].getPosition().x - (int)(speed * frameTime), rectangles[0].getPosition().y));
 	
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		rectangles[0].setPosition(sf::Vector2(rectangles[0].getPosition().x, rectangles[0].getPosition().y - 15));
+		rectangles[0].setPosition(sf::Vector2(rectangles[0].getPosition().x, rectangles[0].getPosition().y - (int)(speed * frameTime)));
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-		rectangles[0].setPosition(sf::Vector2(rectangles[0].getPosition().x, rectangles[0].getPosition().y + 15));
+		rectangles[0].setPosition(sf::Vector2(rectangles[0].getPosition().x, rectangles[0].getPosition().y + (int)(speed * frameTime)));
 }
 
 void Dojo::Application::Draw(sf::RenderWindow& window)
