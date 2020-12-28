@@ -17,6 +17,9 @@ namespace Dojo
 		std::vector<sf::RectangleShape> rectangles;
 		std::vector<sf::Sprite> sprites;
 		std::vector<Entity*> entities;
+		std::vector<sf::Text*> texts;
+
+		sf::Text* CreateText(std::string textContent);
 		Entity* CreateEntity(std::string texturePath);
 		sf::RectangleShape* CreateShape(sf::RectangleShape s);
 		sf::Sprite* CreateSprite(std::string path);
@@ -38,6 +41,7 @@ namespace Dojo
 		std::string programName;
 		sf::Texture texture;
 		sf::Event event;
+		sf::Font font;
 	};
 
 	Application* CreateApplication();

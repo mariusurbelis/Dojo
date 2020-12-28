@@ -2,6 +2,19 @@
 
 namespace Dojo
 {
+	sf::Text* Application::CreateText(std::string textContent)
+	{
+		sf::Text* text = new sf::Text();
+		
+		text->setFont(font);
+		text->setString(textContent);
+		text->setColor(sf::Color::Black);
+
+		texts.push_back(text);
+
+		return text;
+	}
+
 	// TODO: Shared textures. LOADING DUPLICATE TEXTUERS IS INEFFICIENT
 	Entity* Application::CreateEntity(std::string texturePath)
 	{
@@ -49,10 +62,10 @@ namespace Dojo
 	Application::~Application() {}
 
 	void Application::Start() { DOJO_CORE_ERROR("Function Start() is not implemented"); }
-	
+
 	// TODO: Figure out the C26812 warning
 	void Application::KeyPressed(sf::Keyboard::Key key) { DOJO_CORE_ERROR("Function KeyPressed(sf::Keyboard::Key key) is not implemented"); }
-	
+
 	void Application::EndOfFrame() { DOJO_CORE_ERROR("Function EndOfFrame() is not implemented"); }
 	void Application::Update(double frameTime) { DOJO_CORE_ERROR("Function Update(double frameTime) is not implemented"); }
 
@@ -72,6 +85,9 @@ namespace Dojo
 			delete e->texture;
 			delete e;
 		}
+
+		for (sf::Text* t : texts)
+			delete t;
 	}
 
 	// TODO: General cleanup needed
@@ -85,6 +101,8 @@ namespace Dojo
 		window.setFramerateLimit(60); // FPS CAP
 
 		auto firstTime = std::chrono::high_resolution_clock::now();
+
+		if (!font.loadFromFile("res/fonts/ka1.ttf")) { DOJO_CORE_CRITICAL("Font loading error"); }
 
 		Start(); // START / INITIALIZATION FUNCTION
 
@@ -133,6 +151,9 @@ namespace Dojo
 
 			for (Entity* e : entities)
 				window.draw(*(e->sprite));
+
+			for (sf::Text* t : texts)
+				window.draw(*t);
 
 			window.display();
 			// ---------------------------------

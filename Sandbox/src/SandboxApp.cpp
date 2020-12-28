@@ -20,22 +20,30 @@ Dojo::Application* Dojo::CreateApplication()
 {
 	windowWidth = sf::VideoMode::getDesktopMode().width * 0.8;
 	windowHeight = sf::VideoMode::getDesktopMode().height * 0.8;
-	return new Dojo::Application(windowWidth, windowHeight, "Sprite Render Test");
+	return new Dojo::Application(windowWidth, windowHeight, "Sample Program");
 }
 
 void Dojo::Application::Start()
 {
 	Dojo::Application::SetIcon("res/img/dojo.png");
 
-	sf::RectangleShape rectangle;
-	rectangle.setSize(sf::Vector2f(125, 125));
-	rectangle.setOutlineColor(sf::Color(163, 190, 140));
-	rectangle.setFillColor(sf::Color(76, 86, 106));
-	rectangle.setOutlineThickness(25);
-	rectangle.setPosition(windowWidth / 2, windowHeight / 2);
-	myRectangle = Dojo::Application::CreateShape(rectangle);
-
 	entity = Dojo::Application::CreateEntity("res/img/player.png");
+	entity->SetPosition(Vector2(windowWidth / 2 - 128, windowHeight / 2 - 128));
+
+	// TEXT
+	int yOffset = 60;
+	sf::Text* text = Dojo::Application::CreateText("Dojo Engine");
+	text->setPosition(Vector2(10, 10));
+	text = Dojo::Application::CreateText("- Sprites");
+	text->setPosition(Vector2(10, yOffset));
+	text->setScale(Vector2(0.5f, 0.5f));
+	text = Dojo::Application::CreateText("- Movement W A S D");
+	text->setPosition(Vector2(10, yOffset += 20));
+	text->setScale(Vector2(0.5f, 0.5f));
+	text = Dojo::Application::CreateText("- Mouse Click");
+	text->setPosition(Vector2(10, yOffset += 20));
+	text->setScale(Vector2(0.5f, 0.5f));
+	// ----
 }
 
 void Dojo::Application::Update(double frameTime)
@@ -54,7 +62,9 @@ void Dojo::Application::Update(double frameTime)
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
-		rectangles[0].setPosition(Vector2(sf::Mouse::getPosition(*Dojo::Application::windowReference).x, sf::Mouse::getPosition(*Dojo::Application::windowReference).y));
+		entity->SetPosition(Vector2(
+			sf::Mouse::getPosition(*Dojo::Application::windowReference).x - 128,
+			sf::Mouse::getPosition(*Dojo::Application::windowReference).y - 128));
 	}
 
 	//DOJO_CLIENT_INFO("Player pos ({0}, {1})", player.position.x, player.position.y);
