@@ -1,5 +1,10 @@
 # Dojo
-Dojo Engine
+Dojo Engine. Scuffed rectangle rendering engine for **Windows** written in **C++**.
+
+# Current Roadmap
+
+- Sprite rendering implementation
+- Entity class
 
 # Logging
 

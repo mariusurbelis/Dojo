@@ -13,52 +13,50 @@ namespace Dojo
 		rectangles.push_back(rect);
 		return &rect;
 	}
-	Application::~Application()
+
+	sf::Sprite* Application::CreateSprite(std::string path)
 	{
+		sf::Texture texture;
+		texture.loadFromFile(path);
+		
+		sf::Sprite sprite;
+		//sprite.setTexture(texture);
+		//sprite.setTextureRect(sf::IntRect(0, 0, 256, 256));
+		//sprite.setPosition(100, 25);
+		//window.draw(sprite);
+
+		//sprites.push_back(sprite);
+
+		return &sprite;
 	}
 
-	void Application::KeyPressed(sf::Keyboard::Key key)
-	{
-	}
+	Application::~Application() {}
 
-	void Application::EndOfFrame()
-	{
-	}
-
-	void Application::Start()
-	{
-	}
-
-	sf::RenderWindow* windowReference;
+	void Application::Start() { DOJO_CORE_ERROR("Function Start() is not implemented"); }
+	void Application::KeyPressed(sf::Keyboard::Key key) { DOJO_CORE_ERROR("Function KeyPressed(sf::Keyboard::Key key) is not implemented"); }
+	void Application::EndOfFrame() { DOJO_CORE_ERROR("Function EndOfFrame() is not implemented"); }
+	void Application::Update(double frameTime) { DOJO_CORE_ERROR("Function Update(double frameTime) is not implemented"); }
 
 	void Application::SetIcon(std::string path)
 	{
 		sf::Image icon;
+
 		icon.loadFromFile(path);
 		windowReference->setIcon(512, 512, icon.getPixelsPtr());
-	}
-
-	void Application::Update(double frameTime)
-	{
-	}
-
-	void Application::Draw(sf::RenderWindow& windowReference)
-	{
 	}
 
 	void Application::Run()
 	{
 		//DOJO_CORE_INFO("Run started");
 
-		sf::RenderWindow window(sf::VideoMode(width, height), programName + " | Powered By: DOJO ONE");
+		sf::RenderWindow window(sf::VideoMode(width, height), programName + " | Powered By: DOJO ONE", sf::Style::Close | sf::Style::Titlebar);
 		windowReference = &window;
-		window.setFramerateLimit(60);
+
+		window.setFramerateLimit(60); // FPS CAP
 
 		auto firstTime = std::chrono::high_resolution_clock::now();
 
-		Start();
-
-		bool keyIsPressed = false;
+		Start(); // START / INITIALIZATION FUNCTION
 
 		while (window.isOpen())
 		{
@@ -76,22 +74,19 @@ namespace Dojo
 					window.close();
 					break;
 				case sf::Event::KeyPressed:
-					keyIsPressed = true;
+					KeyPressed(event.key.code);
 					if (event.key.code == sf::Keyboard::Escape)
 						window.close();
 					// GENERAL INPUT HANDLING
 					break;
 				case sf::Event::KeyReleased:
-					keyIsPressed = false;
 					break;
 				}
 
 			}
 
-			if (keyIsPressed)
-				KeyPressed(event.key.code);
 
-			{
+			{ // FRAME TIMINGS COUNTER
 				auto secondTime = std::chrono::high_resolution_clock::now();
 				using dMsecs = std::chrono::duration<double, std::chrono::milliseconds::period>;
 				auto elapsed = dMsecs(secondTime - firstTime);
@@ -99,22 +94,19 @@ namespace Dojo
 				Update(elapsed.count());
 			}
 
-
+			// CLEAR THE SCREEN DRAW AND DISPLAY
 			window.clear(sf::Color::White);
 
-			//Draw(window);
-
-
 			for (sf::RectangleShape d : rectangles)
-			{
-				//DOJO_CORE_WARN("Huh: {0}", *d);
-				// Does not work
 				window.draw(d);
-			}
+
+			for (sf::Sprite s : sprites)
+				window.draw(s);
 
 			window.display();
+			// ---------------------------------
 
-			EndOfFrame();
+			EndOfFrame(); // END OF FRAME
 		}
 	}
 }

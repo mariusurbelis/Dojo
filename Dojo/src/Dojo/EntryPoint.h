@@ -3,6 +3,7 @@
 extern Dojo::Application* Dojo::CreateApplication();
 //extern void Dojo::HandleInput();
 
+
 int main(int argc, char** argv)
 {
 	Dojo::Log::Init();

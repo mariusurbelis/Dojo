@@ -144,6 +144,7 @@ project "Sandbox"
 	filter "configurations:*"
 		defines { "SFML_STATIC" }
 		includedirs { "Dojo/lib/SFML/include" }
+		kind "ConsoleApp"
 		libdirs { "Dojo/lib/SFML/lib" }
 		links
 		{
@@ -186,8 +187,10 @@ project "Sandbox"
 	filter "configurations:Distribution"
 		defines { "DOJO_DISTRIBUTION", "NDEBUG" }
 		optimize "On"
+		kind "WindowedApp"
 		links
 		{	
+			"sfml-main.lib",
 			"sfml-graphics-s",
 			"sfml-window-s",
 			"sfml-system-s",
