@@ -16,16 +16,14 @@ namespace Dojo
 
 	sf::Sprite* Application::CreateSprite(std::string path)
 	{
-		sf::Texture texture;
 		texture.loadFromFile(path);
-		
-		sf::Sprite sprite;
-		//sprite.setTexture(texture);
-		//sprite.setTextureRect(sf::IntRect(0, 0, 256, 256));
-		//sprite.setPosition(100, 25);
-		//window.draw(sprite);
 
-		//sprites.push_back(sprite);
+		sf::Sprite sprite;
+		sprite.setTexture(texture);
+		sprite.setTextureRect(sf::IntRect(0, 0, 256, 256));
+		sprite.setPosition(100, 25);
+
+		sprites.push_back(sprite);
 
 		return &sprite;
 	}

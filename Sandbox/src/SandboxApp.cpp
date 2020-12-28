@@ -13,9 +13,10 @@ class Entity
 {
 public:
 	sf::Vector2<float> position = sf::Vector2(0.f, 0.f);
-	sf::Texture texture;
 	sf::Sprite* sprite;
 };
+
+static Entity player;
 
 static sf::Text text;
 static int windowWidth, windowHeight;
@@ -37,27 +38,11 @@ void Dojo::Application::Start()
 	Dojo::Application::GetWindow().setIcon(256, 256, icon.getPixelsPtr());
 	*/
 
+	player.sprite = Dojo::Application::CreateSprite("res/img/player.png");
+	player.sprite->setPosition(player.position);
 
-	Entity player;
-
-	//player.sprite = Dojo::Application::CreateSprite("res/img/player.png");
-	//player.sprite->setPosition(player.position);
-	
 
 	Dojo::Application::SetIcon("res/img/dojo.png");
-
-	sf::Font font;
-
-	if (!font.loadFromFile("res/fonts/ka1.ttf"))
-	{
-		// ERROR LOADING TEXT
-		DOJO_CLIENT_CRITICAL("ERROR LOADING FONT");
-	}
-
-	text.setFont(font);
-	text.setString("REEEEEEEEE!!!");
-	text.setCharacterSize(100);
-	text.setPosition(100, 300);
 
 	sf::RectangleShape rectangle;
 	rectangle.setSize(sf::Vector2f(125, 125));
@@ -86,8 +71,15 @@ void Dojo::Application::Update(double frameTime)
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
+		player.position.x = (float)sf::Mouse::getPosition(*Dojo::Application::windowReference).x;
+		player.position.y = (float)sf::Mouse::getPosition(*Dojo::Application::windowReference).y;
+
 		rectangles[0].setPosition(sf::Vector2((float)sf::Mouse::getPosition(*Dojo::Application::windowReference).x, (float)sf::Mouse::getPosition(*Dojo::Application::windowReference).y));
 	}
+
+	//DOJO_CLIENT_INFO("Player pos ({0}, {1})", player.position.x, player.position.y);
+
+	Dojo::Application::sprites[0].setPosition(player.position);
 }
 
 void Dojo::Application::KeyPressed(sf::Keyboard::Key keyCode)

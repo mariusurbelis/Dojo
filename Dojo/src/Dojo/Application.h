@@ -30,6 +30,7 @@ namespace Dojo
 		int width, height;
 		sf::RenderWindow* windowReference;
 		std::string programName;
+		sf::Texture texture;
 	};
 
 	Application* CreateApplication();
