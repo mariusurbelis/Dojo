@@ -3,8 +3,9 @@ Dojo Engine. Scuffed rectangle and sprite rendering engine for **Windows** writt
 
 # Current Roadmap
 
-- Sprite rendering implementation
-- Entity class
+- ~~Sprite rendering implementation~~ (Done)
+- Shared textures
+- ~~Entity class~~ (Done)
 
 # Logging
 
