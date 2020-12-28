@@ -1,4 +1,5 @@
 #include "Entity.h"
+#include "Application.h"
 
 namespace Dojo
 {
@@ -12,8 +13,11 @@ namespace Dojo
 		sprite->setPosition(position);
 	}
 
-	void Entity::Move(float x, float y, double frameTime)
+	void Entity::Move(float x, float y)
 	{
-		SetPosition(Vector2(GetPosition().x + x * speed * (float)frameTime, GetPosition().y + y * speed * (float)frameTime));
+		SetPosition(Vector2(
+			GetPosition().x + x * speed * Dojo::Application::GetInstance()->GetFrameTime(),
+			GetPosition().y + y * speed * Dojo::Application::GetInstance()->GetFrameTime())
+		);
 	}
 }

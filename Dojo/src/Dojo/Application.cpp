@@ -5,25 +5,35 @@ namespace Dojo
 	sf::Text* Application::CreateText(std::string textContent)
 	{
 		sf::Text* text = new sf::Text();
-		
+
 		text->setFont(font);
 		text->setString(textContent);
 		text->setColor(sf::Color::Black);
+		text->setOutlineColor(sf::Color::White);
+		text->setOutlineThickness(10);
 
 		texts.push_back(text);
 
 		return text;
 	}
 
-	// TODO: Shared textures. LOADING DUPLICATE TEXTUERS IS INEFFICIENT
-	Entity* Application::CreateEntity(std::string texturePath)
+	std::shared_ptr<Entity> Application::CreateEntity(std::string texturePath)
 	{
-		Entity* entity = new Dojo::Entity();
+		std::shared_ptr<Entity> entity = std::make_shared<Entity>();
 
-		entity->texture = new sf::Texture();
-		entity->sprite = new sf::Sprite();
+		if (!textures.count(texturePath))
+		{
+			std::shared_ptr<sf::Texture> newTexture = std::make_shared<sf::Texture>();
+			newTexture->loadFromFile(texturePath);
+			textures.insert(std::pair<std::string, std::shared_ptr<sf::Texture>>(texturePath, newTexture));
+			entity->texture = newTexture;
+		}
+		else
+		{
+			entity->texture = textures.at(texturePath);
+		}
 
-		entity->texture->loadFromFile(texturePath);
+		entity->sprite = std::make_shared <sf::Sprite>();
 		entity->sprite->setTexture(*(entity->texture));
 
 		entities.push_back(entity);
@@ -59,6 +69,15 @@ namespace Dojo
 		return &sprite;
 	}
 
+	void Application::DestroyEntity(std::shared_ptr<Entity> entityToDestroy)
+	{
+		entities.erase(std::remove(entities.begin(), entities.end(), entityToDestroy), entities.end());
+	}
+
+	Application* Application::instance = NULL;
+
+	Application* Application::GetInstance() { return(instance); }
+
 	Application::~Application() {}
 
 	void Application::Start() { DOJO_CORE_ERROR("Function Start() is not implemented"); }
@@ -77,17 +96,16 @@ namespace Dojo
 	}
 
 	// TODO: More testing needed to ensure all memory is being freed
+	// Use shared_ptr?
 	void Application::DestroyAll()
 	{
-		for (Entity* e : entities)
-		{
-			delete e->sprite;
-			delete e->texture;
-			delete e;
-		}
-
 		for (sf::Text* t : texts)
 			delete t;
+	}
+
+	double Application::GetFrameTime()
+	{
+		return lastFrameTime;
 	}
 
 	// TODO: General cleanup needed
@@ -135,11 +153,12 @@ namespace Dojo
 				using dMsecs = std::chrono::duration<double, std::chrono::milliseconds::period>;
 				auto elapsed = dMsecs(secondTime - firstTime);
 				firstTime = secondTime;
-				Update(elapsed.count());
+				lastFrameTime = elapsed.count();
+				Update(lastFrameTime);
 			}
 
 			// CLEAR THE SCREEN DRAW AND DISPLAY
-			window.clear(sf::Color::White);
+			window.clear(sf::Color(30, 30, 30));
 
 			for (sf::RectangleShape d : rectangles)
 				window.draw(d);
@@ -149,7 +168,7 @@ namespace Dojo
 
 			//DOJO_CORE_TRACE("Entity created {0}", entities[0]->sprite->getPosition().x);
 
-			for (Entity* e : entities)
+			for (std::shared_ptr<Entity> e : entities)
 				window.draw(*(e->sprite));
 
 			for (sf::Text* t : texts)

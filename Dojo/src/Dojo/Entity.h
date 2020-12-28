@@ -2,6 +2,7 @@
 
 #include "Core.h"
 #include <SFML/Graphics.hpp>
+
 typedef sf::Vector2<float> Vector2;
 
 namespace Dojo
@@ -12,11 +13,11 @@ namespace Dojo
 		// TODO: Uninitialized texture and sprite here
 		Entity() {}
 		~Entity() {}
-		sf::Texture* texture;
-		sf::Sprite* sprite;
+		std::shared_ptr<sf::Texture> texture;
+		std::shared_ptr <sf::Sprite> sprite;
 		float speed = 1;
 		Vector2 GetPosition();
 		void SetPosition(Vector2 position);
-		void Move(float x, float y, double frameTime);
+		void Move(float x, float y);
 	};
 }
