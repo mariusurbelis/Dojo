@@ -19,3 +19,6 @@ Log macros defined:
   - Critical
 
 Usage example: DOJO_CORE_ERROR("Error message {0}", variable);
+
+For client omit CORE_:
+Usage example: DOJO_ERROR("Error message {0}", variable);
